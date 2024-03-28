@@ -12,9 +12,11 @@ import {
   Animated,
   SafeAreaView,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const logo = require("../../assets/icon/login.png");
+const logo = require("../../../assets/icon/login.png");
 
 const FormLogin = () => {
   this.imageHeight = new Animated.Value(10);
@@ -24,6 +26,8 @@ const FormLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const { isLoading, login } = useContext(AuthContext);
 
   const validationForm = () => {
     let errors = {};
@@ -42,6 +46,7 @@ const FormLogin = () => {
       setUsername("");
       setPassword("");
       setErrors({});
+      login(username, password);
     }
   };
 
@@ -81,8 +86,9 @@ const FormLogin = () => {
         barStyle="light-content"
         showHideTransition="slide"
       />
+      <Spinner visible={isLoading}></Spinner>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "100" : "0"}
         style={styles.container}
       >
         <View style={styles.form}>
